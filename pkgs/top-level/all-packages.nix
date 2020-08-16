@@ -9434,7 +9434,9 @@ in
   };
   cargo-tarpaulin = callPackage ../development/tools/analysis/cargo-tarpaulin { };
   cargo-tree = callPackage ../tools/package-management/cargo-tree { };
-  cargo-update = callPackage ../tools/package-management/cargo-update { };
+  cargo-update = callPackage ../tools/package-management/cargo-update {
+    inherit (darwin.apple_sdk.frameworks) Security;
+  };
 
   cargo-asm = callPackage ../development/tools/rust/cargo-asm {
     inherit (darwin.apple_sdk.frameworks) Security;
@@ -9831,13 +9833,6 @@ in
   };
 
   me_cleaner = pythonPackages.callPackage ../tools/misc/me_cleaner { };
-
-  mesos = callPackage ../applications/networking/cluster/mesos {
-    sasl = cyrus_sasl;
-    inherit (pythonPackages) python boto setuptools wrapPython;
-    pythonProtobuf = pythonPackages.protobuf.override { protobuf = protobuf3_6; };
-    perf = linuxPackages.perf;
-  };
 
   mesos-dns = callPackage ../servers/mesos-dns { };
 
@@ -10816,7 +10811,7 @@ in
   gradle_4_10 = res.gradleGen.gradle_4_10;
   gradle_4 = gradle_4_10;
   gradle_5 = res.gradleGen.gradle_5_6;
-  gradle_6 = res.gradleGen.gradle_6_5;
+  gradle_6 = res.gradleGen.gradle_6_6;
 
   gperf = callPackage ../development/tools/misc/gperf { };
   # 3.1 changed some parameters from int to size_t, leading to mismatches.
@@ -17421,6 +17416,14 @@ in
     ];
   };
 
+  linux_zen = callPackage ../os-specific/linux/kernel/linux-zen.nix {
+    kernelPatches = [
+      kernelPatches.bridge_stp_helper
+      kernelPatches.request_key_helper
+      kernelPatches.export_kernel_fpu_functions."5.3"
+    ];
+  };
+
   /* Linux kernel modules are inherently tied to a specific kernel.  So
      rather than provide specific instances of those packages for a
      specific kernel, we have a function that builds those packages
@@ -17700,6 +17703,9 @@ in
   linux-libre = callPackage ../os-specific/linux/kernel/linux-libre.nix {};
   linuxPackages_latest-libre = recurseIntoAttrs (linuxPackagesFor linux_latest-libre);
   linux_latest-libre = linux-libre.override { linux = linux_latest; };
+
+  # zen-kernel
+  linuxPackages_zen = recurseIntoAttrs (linuxPackagesFor pkgs.linux_zen);
 
   # A function to build a manually-configured kernel
   linuxManualConfig = makeOverridable (callPackage ../os-specific/linux/kernel/manual-config.nix {});
@@ -19494,8 +19500,6 @@ in
   bookworm = callPackage ../applications/office/bookworm { };
 
   chromium = callPackage ../applications/networking/browsers/chromium (config.chromium or {});
-
-  chronos = callPackage ../applications/networking/cluster/chronos { };
 
   chromiumBeta = lowPrio (chromium.override { channel = "beta"; });
 
@@ -21342,7 +21346,6 @@ in
 
   mapmap = libsForQt5.callPackage ../applications/video/mapmap { };
 
-  marathon = callPackage ../applications/networking/cluster/marathon { };
   marathonctl = callPackage ../tools/virtualization/marathonctl { } ;
 
   markdown-pp = callPackage ../tools/text/markdown-pp { };
