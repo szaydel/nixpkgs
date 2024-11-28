@@ -1610,7 +1610,6 @@ with pkgs;
   android-tools = lowPrio (darwin.apple_sdk_11_0.callPackage ../tools/misc/android-tools { });
 
   angie = callPackage ../servers/http/angie {
-    zlib = zlib-ng.override { withZlibCompat = true; };
     withPerl = false;
     # We don't use `with` statement here on purpose!
     # See https://github.com/NixOS/nixpkgs/pull/10474#discussion_r42369334
@@ -1618,7 +1617,6 @@ with pkgs;
   };
 
   angieQuic = callPackage ../servers/http/angie {
-    zlib = zlib-ng.override { withZlibCompat = true; };
     withPerl = false;
     withQuic = true;
     # We don't use `with` statement here on purpose!
@@ -1901,8 +1899,6 @@ with pkgs;
 
   gopass-hibp = callPackage ../tools/security/gopass/hibp.nix { };
 
-  gopass-jsonapi = callPackage ../tools/security/gopass/jsonapi.nix { };
-
   git-credential-gopass = callPackage ../tools/security/gopass/git-credential.nix { };
 
   gopass-summon-provider = callPackage ../tools/security/gopass/summon.nix { };
@@ -2032,8 +2028,6 @@ with pkgs;
   packetbeat = packetbeat7;
 
   biliass = with python3.pkgs; toPythonApplication biliass;
-
-  binwalk = with python3Packages; toPythonApplication binwalk;
 
   birdtray = libsForQt5.callPackage ../applications/misc/birdtray { };
 
@@ -3041,10 +3035,6 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) CoreServices;
   };
 
-  cobang = python311Packages.callPackage ../applications/misc/cobang {
-    gst-plugins-good = gst_all_1.gst-plugins-good.override { gtkSupport = true; };
-  };
-
   cocoapods = callPackage ../development/tools/cocoapods { };
 
   cocoapods-beta = lowPrio (callPackage ../development/tools/cocoapods { beta = true; });
@@ -3818,7 +3808,7 @@ with pkgs;
 
   hpccm = with python3Packages; toPythonApplication hpccm;
 
-  hqplayer-desktop = libsForQt5.callPackage ../applications/audio/hqplayer-desktop { };
+  hqplayer-desktop = qt6Packages.callPackage ../applications/audio/hqplayer-desktop { };
 
   html-proofer = callPackage ../tools/misc/html-proofer { };
 
@@ -3960,9 +3950,7 @@ with pkgs;
 
   json-schema-for-humans = with python3Packages; toPythonApplication json-schema-for-humans;
 
-  jsonwatch = callPackage ../tools/misc/jsonwatch {
-    inherit (darwin.apple_sdk.frameworks) Security;
-  };
+  jsonwatch = callPackage ../tools/misc/jsonwatch { };
 
   jupyter = callPackage ../applications/editors/jupyter { };
 
@@ -6599,6 +6587,9 @@ with pkgs;
   jre17_minimal = callPackage ../development/compilers/openjdk/jre.nix {
     jdk = jdk17;
   };
+  jre21_minimal = callPackage ../development/compilers/openjdk/jre.nix {
+    jdk = jdk21;
+  };
   jre_minimal = callPackage ../development/compilers/openjdk/jre.nix { };
 
   openjdk = jdk;
@@ -8178,8 +8169,6 @@ with pkgs;
       then targetPackages.stdenv.cc.cc
     else gcc.cc;
 
-  libstdcxx5 = callPackage ../development/libraries/gcc/libstdc++/5.nix { };
-
   libsigrok = callPackage ../development/tools/libsigrok {
     python = python3;
   };
@@ -9246,7 +9235,6 @@ with pkgs;
 
   gdcm = callPackage ../development/libraries/gdcm {
     inherit (darwin) DarwinTools;
-    inherit (darwin.apple_sdk.frameworks) ApplicationServices Cocoa;
   };
 
   givaro = callPackage ../development/libraries/givaro { };
@@ -11114,13 +11102,7 @@ with pkgs;
     gtkVersion = "4";
   };
 
-  vtk_9 = libsForQt5.callPackage ../development/libraries/vtk/9.x.nix {
-    inherit (darwin) libobjc;
-    inherit (darwin.apple_sdk.libs) xpc;
-    inherit (darwin.apple_sdk.frameworks) AGL Cocoa CoreServices DiskArbitration
-                                          IOKit CFNetwork Security ApplicationServices
-                                          CoreText IOSurface ImageIO OpenGL GLUT;
-  };
+  vtk_9 = libsForQt5.callPackage ../development/libraries/vtk/9.x.nix { };
 
   vtk_9_withQt5 = vtk_9.override { enableQt = true; };
 
@@ -11845,7 +11827,6 @@ with pkgs;
   nginx = nginxStable;
 
   nginxQuic = callPackage ../servers/http/nginx/quic.nix {
-    zlib = zlib-ng.override { withZlibCompat = true; };
     withPerl = false;
     # We don't use `with` statement here on purpose!
     # See https://github.com/NixOS/nixpkgs/pull/10474#discussion_r42369334
@@ -11855,7 +11836,6 @@ with pkgs;
   };
 
   nginxStable = callPackage ../servers/http/nginx/stable.nix {
-    zlib = zlib-ng.override { withZlibCompat = true; };
     withPerl = false;
     # We don't use `with` statement here on purpose!
     # See https://github.com/NixOS/nixpkgs/pull/10474#discussion_r42369334
@@ -11863,7 +11843,6 @@ with pkgs;
   };
 
   nginxMainline = callPackage ../servers/http/nginx/mainline.nix {
-    zlib = zlib-ng.override { withZlibCompat = true; };
     withKTLS = true;
     withPerl = false;
     # We don't use `with` statement here on purpose!
@@ -11892,6 +11871,7 @@ with pkgs;
   openafs = callPackage ../servers/openafs/1.8 { };
 
   openresty = callPackage ../servers/http/openresty {
+    zlib-ng = zlib;
     withPerl = false;
     modules = [];
   };
@@ -13358,11 +13338,7 @@ with pkgs;
     protobuf = protobuf_21;
   };
 
-  audacious = qt6Packages.callPackage ../applications/audio/audacious { };
-  audacious-plugins = qt6Packages.callPackage ../applications/audio/audacious/plugins.nix {
-    # Avoid circular dependency
-    audacious = audacious.override { audacious-plugins = null; };
-  };
+  audacious = audacious-bare.override { withPlugins = true; };
 
   av-98 = callPackage ../applications/networking/browsers/av-98 { };
 
@@ -13917,14 +13893,15 @@ with pkgs;
     inherit (darwin.apple_sdk.frameworks) Cocoa;
   };
 
-  greetd = recurseIntoAttrs {
-    dlm = throw "greetd.dlm has been removed as it is broken and abandoned upstream"; #Added 2024-07-15
+  greetd = recurseIntoAttrs ({
     greetd = callPackage ../applications/display-managers/greetd { };
     gtkgreet = callPackage ../applications/display-managers/greetd/gtkgreet.nix { };
     regreet = callPackage ../applications/display-managers/greetd/regreet.nix { };
     tuigreet = callPackage ../applications/display-managers/greetd/tuigreet.nix { };
     wlgreet = callPackage ../applications/display-managers/greetd/wlgreet.nix { };
-  };
+  } // lib.optionalAttrs config.allowAliases {
+    dlm = throw "greetd.dlm has been removed as it is broken and abandoned upstream"; #Added 2024-07-15
+  });
 
   goldendict = libsForQt5.callPackage ../applications/misc/goldendict { };
   goldendict-ng = qt6Packages.callPackage ../applications/misc/goldendict-ng { };
@@ -17288,10 +17265,6 @@ with pkgs;
 
   ue4demos = recurseIntoAttrs (callPackage ../games/ue4demos { });
 
-  ut2004Packages = dontRecurseIntoAttrs (callPackage ../games/ut2004 { });
-
-  ut2004demo = res.ut2004Packages.ut2004 [ res.ut2004Packages.ut2004-demo ];
-
   # To ensure vdrift's code is built on hydra
   vdrift-bin = vdrift.bin;
 
@@ -18077,8 +18050,6 @@ with pkgs;
   applgrid = callPackage ../development/libraries/physics/applgrid {
     inherit (darwin.apple_sdk.frameworks) Cocoa;
   };
-
-  geant4 = libsForQt5.callPackage ../development/libraries/physics/geant4 { };
 
   hepmc3 = callPackage ../development/libraries/physics/hepmc3 {
     python = null;
