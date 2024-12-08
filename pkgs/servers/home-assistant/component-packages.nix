@@ -352,7 +352,10 @@
       paho-mqtt_1
     ];
     "azure_data_explorer" = ps: with ps; [
-    ]; # missing inputs: azure-kusto-data azure-kusto-ingest
+      azure-kusto-data
+      azure-kusto-ingest
+    ]
+    ++ azure-kusto-data.optional-dependencies.aio;
     "azure_devops" = ps: with ps; [
       aioazuredevops
     ];
@@ -2296,14 +2299,13 @@
       hassil
       home-assistant-intents
       ifaddr
-      lmcloud
       mutagen
       pymicro-vad
       pyserial
       pyspeex-noise
       pyudev
       zeroconf
-    ];
+    ]; # missing inputs: lmcloud
     "lametric" = ps: with ps; [
       demetriek
     ];
@@ -3225,7 +3227,8 @@
       p1monitor
     ];
     "palazzetti" = ps: with ps; [
-    ]; # missing inputs: pypalazzetti
+      pypalazzetti
+    ];
     "panasonic_bluray" = ps: with ps; [
       panacotta
     ];
@@ -5125,6 +5128,7 @@
     "awair"
     "aws"
     "axis"
+    "azure_data_explorer"
     "azure_devops"
     "azure_event_hub"
     "backup"
@@ -5453,7 +5457,6 @@
     "kostal_plenticore"
     "kraken"
     "kulersky"
-    "lamarzocco"
     "lametric"
     "landisgyr_heat_meter"
     "lastfm"
@@ -5615,6 +5618,7 @@
     "ovo_energy"
     "owntracks"
     "p1_monitor"
+    "palazzetti"
     "panasonic_viera"
     "panel_custom"
     "peco"
