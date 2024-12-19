@@ -56,7 +56,7 @@ let
       apple-sdk.override { enableBootstrap = true; };
 
   src' = if monorepoSrc != null then
-    runCommand "${baseName}-src-${version}" {} (''
+    runCommand "${baseName}-src-${version}" { inherit (monorepoSrc) passthru; } (''
       mkdir -p "$out"
     '' + lib.optionalString (lib.versionAtLeast release_version "14") ''
       cp -r ${monorepoSrc}/cmake "$out"
@@ -73,8 +73,7 @@ stdenv.mkDerivation ({
   inherit pname version patches;
 
   src = src';
-  sourceRoot = if lib.versionOlder release_version "13" then null
-    else "${src'.name}/${baseName}";
+  sourceRoot = "${src'.name}/${baseName}";
 
   nativeBuildInputs = [ cmake ]
     ++ (lib.optional (lib.versionAtLeast release_version "15") ninja)
