@@ -27,7 +27,6 @@ makeScopeWithSplicing' {
     inherit (self) callPackage;
     noExtraAttrs = set: lib.attrsets.removeAttrs set [ "extend" "override" "overrideScope" "overrideDerivation" ];
   in (noExtraAttrs qt6) // {
-  inherit stdenv;
 
   # LIBRARIES
   accounts-qt = callPackage ../development/libraries/accounts-qt { };
@@ -55,6 +54,9 @@ makeScopeWithSplicing' {
   futuresql = callPackage ../development/libraries/futuresql { };
   kquickimageedit = callPackage ../development/libraries/kquickimageedit { };
   libqaccessibilityclient = callPackage ../development/libraries/libqaccessibilityclient { };
+
+  libqtpas = callPackage ../development/compilers/fpc/libqtpas.nix { };
+
   libquotient = callPackage ../development/libraries/libquotient { };
   mlt = pkgs.mlt.override {
     qt = qt6;
@@ -86,9 +88,13 @@ makeScopeWithSplicing' {
 
   qtutilities = callPackage ../development/libraries/qtutilities { };
 
+  qt-jdenticon = callPackage ../development/libraries/qt-jdenticon { };
+
   quazip = callPackage ../development/libraries/quazip { };
 
   qscintilla = callPackage ../development/libraries/qscintilla { };
+
+  qtspell = callPackage ../development/libraries/qtspell { };
 
   qwlroots = callPackage ../development/libraries/qwlroots {
     wlroots = pkgs.wlroots_0_17;
@@ -118,4 +124,6 @@ makeScopeWithSplicing' {
 
   xwaylandvideobridge = kdePackages.callPackage ../tools/wayland/xwaylandvideobridge { };
   });
+} // {
+  stdenv = lib.warn "qt6Packages.stdenv is deprecated. Use stdenv instead." stdenv; # Added for 25.05
 }
