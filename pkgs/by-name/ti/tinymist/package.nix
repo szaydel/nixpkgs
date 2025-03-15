@@ -14,21 +14,21 @@
   vscode-extensions,
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "tinymist";
   # Please update the corresponding vscode extension when updating
   # this derivation.
-  version = "0.13.0";
+  version = "0.13.8";
 
   src = fetchFromGitHub {
     owner = "Myriad-Dreamin";
     repo = "tinymist";
-    tag = "v${version}";
-    hash = "sha256-b2tU9weUKc0Y8LikSblfa3ifckp3u09M9Rhl+WujugI=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-dKLHZyFkTo6iCw/s73asJqXoNBpYx7UC/r2qVp5dLjs=";
   };
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-eKMkvRPVM6UjURQ8GCCYYU4gTaVi/dLWh/D/XQmM6mw=";
+  cargoHash = "sha256-XbPqddmVv5zubnbT5IewAcvPJWQMIumWgGI+q/r1Ip4=";
 
   nativeBuildInputs = [
     installShellFiles
@@ -79,7 +79,7 @@ rustPlatform.buildRustPackage rec {
   nativeInstallCheckInputs = [
     versionCheckHook
   ];
-  versionCheckProgramArg = [ "-V" ];
+  versionCheckProgramArg = "-V";
   doInstallCheck = true;
 
   passthru = {
@@ -90,9 +90,9 @@ rustPlatform.buildRustPackage rec {
   };
 
   meta = {
-    changelog = "https://github.com/Myriad-Dreamin/tinymist/blob/v${version}/CHANGELOG.md";
     description = "Tinymist is an integrated language service for Typst";
     homepage = "https://github.com/Myriad-Dreamin/tinymist";
+    changelog = "https://github.com/Myriad-Dreamin/tinymist/blob/v${finalAttrs.version}/editors/vscode/CHANGELOG.md";
     license = lib.licenses.asl20;
     mainProgram = "tinymist";
     maintainers = with lib.maintainers; [
@@ -100,4 +100,4 @@ rustPlatform.buildRustPackage rec {
       lampros
     ];
   };
-}
+})

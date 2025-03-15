@@ -9,7 +9,7 @@
   rustPlatform,
   rustc,
   nixosTests,
-  callPackage,
+  nix-update-script,
 }:
 
 let
@@ -17,20 +17,20 @@ let
 in
 python3.pkgs.buildPythonApplication rec {
   pname = "matrix-synapse";
-  version = "1.124.0";
+  version = "1.126.0";
   format = "pyproject";
 
   src = fetchFromGitHub {
     owner = "element-hq";
     repo = "synapse";
     rev = "v${version}";
-    hash = "sha256-hL1MdngaAVqgdN8GS9m3jn4twsbX0GPFa5cq+SCJ1oI=";
+    hash = "sha256-fEJ4gxftC9oPhmcvbMdwxbZsHVfed9NS8Sjb7BTmTQo=";
   };
 
   cargoDeps = rustPlatform.fetchCargoVendor {
     inherit src;
     name = "${pname}-${version}";
-    hash = "sha256-OIrjBhjSavJubpcMtHLrfuK7uhfNd+AHKUmHno32yo4=";
+    hash = "sha256-P0JNGaRUd3fiwfPLnXQGeTDTURLgqO6g4KRIs86omYg=";
   };
 
   postPatch = ''
@@ -178,6 +178,7 @@ python3.pkgs.buildPythonApplication rec {
     tests = { inherit (nixosTests) matrix-synapse matrix-synapse-workers; };
     inherit plugins;
     python = python3;
+    updateScript = nix-update-script { };
   };
 
   meta = with lib; {
