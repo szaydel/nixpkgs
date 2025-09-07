@@ -14727,6 +14727,12 @@
     githubId = 40217331;
     name = "LizeLive";
   };
+  ljxfstorm = {
+    name = "Likai Liu";
+    email = "ljxf.storm@live.cn";
+    github = "ljxfstorm";
+    githubId = 7077478;
+  };
   llakala = {
     email = "elevenaka11@gmail.com";
     github = "llakala";
@@ -24418,6 +24424,12 @@
     github = "stackshadow";
     githubId = 7512804;
     name = "Martin Langlotz";
+  };
+  stapelberg = {
+    name = "Michael Stapelberg";
+    github = "stapelberg";
+    githubId = 55506;
+    email = "michael+nix@stapelberg.ch";
   };
   starcraft66 = {
     name = "Tristan Gosselin-Hane";
