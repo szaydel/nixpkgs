@@ -254,6 +254,7 @@ mapAliases {
   elasticsearch7Plugins = elasticsearchPlugins; # preserve, reason: until v8
   fetchFromGithub = throw "You meant fetchFromGitHub, with a capital H"; # preserve, reason: common typo
   fuse2fs = if stdenv.hostPlatform.isLinux then e2fsprogs.fuse2fs else null; # Added 2022-03-27 preserve, reason: convenience, arch has a package named fuse2fs too.
+  uclibc = uclibc-ng; # preserve, because uclibc-ng can't be used in config string
   wlroots = wlroots_0_19; # preserve, reason: wlroots is unstable, we must keep depending on 'wlroots_0_*', convert to package after a stable(1.x) release
   wormhole-rs = magic-wormhole-rs; # Added 2022-05-30. preserve, reason: Arch package name, main binary name
 
@@ -520,7 +521,6 @@ mapAliases {
   elm-github-install = throw "'elm-github-install' has been removed as it is abandoned upstream and only supports Elm 0.18.0"; # Added 2025-08-25
   emacsMacport = throw "'emacsMacport' has been renamed to/replaced by 'emacs-macport'"; # Converted to throw 2025-10-27
   emacsNativeComp = throw "'emacsNativeComp' has been renamed to/replaced by 'emacs'"; # Converted to throw 2025-10-27
-  emacsPackages = throw "'emacsPackages' has been renamed to/replaced by 'emacs.pkgs'"; # Converted to throw 2025-10-27
   embree2 = throw "embree2 has been removed, as it is unmaintained upstream and depended on tbb_2020"; # Added 2025-09-14
   EmptyEpsilon = throw "'EmptyEpsilon' has been renamed to/replaced by 'empty-epsilon'"; # Converted to throw 2025-10-27
   emulationstation = throw "emulationstation was removed due to numerous vulnerabilities in freeimage"; # Added 2025-10-23
@@ -1521,7 +1521,6 @@ mapAliases {
   uade123 = throw "'uade123' has been renamed to/replaced by 'uade'"; # Converted to throw 2025-10-27
   uae = throw "'uae' has been removed due to lack of upstream maintenance. Consider using 'fsuae' instead."; # Added 2025-06-11
   ubuntu_font_family = throw "'ubuntu_font_family' has been renamed to/replaced by 'ubuntu-classic'"; # Converted to throw 2025-10-27
-  uclibc = throw "'uclibc' has been renamed to/replaced by 'uclibc-ng'"; # Converted to throw 2025-10-27
   unicap = throw "'unicap' has been removed because it is unmaintained"; # Added 2025-05-17
   unifi-poller = throw "'unifi-poller' has been renamed to/replaced by 'unpoller'"; # Converted to throw 2025-10-27
   unzoo = throw "'unzoo' has been removed since it is unmaintained upstream and doesn't compile with newer versions of GCC anymore"; # Removed 2025-05-24
@@ -1533,6 +1532,7 @@ mapAliases {
   vamp.vampSDK = throw "'vamp.vampSDK' has been renamed to/replaced by 'vamp-plugin-sdk'"; # Converted to throw 2025-10-27
   vaultwarden-vault = throw "'vaultwarden-vault' has been renamed to/replaced by 'vaultwarden.webvault'"; # Converted to throw 2025-10-27
   vbetool = throw "'vbetool' has been removed as it is broken and not maintained upstream."; # Added 2025-06-11
+  vboot_reference = vboot-utils; # Added 2025-11-01
   vc_0_7 = throw "'vc_0_7' has been removed as it was broken, unused in nixpkgs and unmaintained"; # Added 2025-10-20
   vdirsyncerStable = throw "'vdirsyncerStable' has been renamed to/replaced by 'vdirsyncer'"; # Converted to throw 2025-10-27
   ventoy-bin = throw "'ventoy-bin' has been renamed to/replaced by 'ventoy'"; # Converted to throw 2025-10-27
